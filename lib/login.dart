@@ -4,9 +4,7 @@ import 'package:flutter/cupertino.dart'; //new
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 
-
 class Login extends StatefulWidget {
-
   _LoginState createState() => _LoginState();
 }
 
@@ -50,7 +48,12 @@ class _LoginFormState extends State<LoginForm> {
 
   String email = "test@test.com";
   String password = "123456";
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _isloading = false;
 
   // Toggles the password show status
   void _toggle() {
@@ -59,21 +62,46 @@ class _LoginFormState extends State<LoginForm> {
     });
   }
 
+  void setIsLoading(bool isLoading) {
+    setState(() {
+      _isloading = isLoading;
+    });
+  }
+
   Future<FirebaseUser> _handleSignIn() async {
-  FirebaseUser user = await _auth.signInWithEmailAndPassword(
-    email: email,
-    password: password
-  );
+    setIsLoading(true);
 
-  print("signed in " + user.displayName);
+    assert()
 
-  Navigator.pushReplacementNamed(context, "/home");
-  return user;
-}
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    if (password.isEmpty || email.isEmpty) {
+      setIsLoading(false);
+      return null;
+    }
+
+    FirebaseUser user = await _auth
+        .signInWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text)
+        .then((user) {
+      setIsLoading(false);
+      Navigator.pushNamed(
+          context, "/home"); //TODO replace with replacewithNamed
+    }).catchError((e) {
+      Scaffold.of(context)
+          .showSnackBar(SnackBar(content: Text('Wrong username or password!')));
+      setIsLoading(false);
+      return null;
+    });
+
+    return user;
+  }
 
   @override
   Widget build(BuildContext context) {
     final email = TextFormField(
+      controller: emailController,
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       decoration: InputDecoration(
@@ -90,6 +118,7 @@ class _LoginFormState extends State<LoginForm> {
     );
 
     final password = TextFormField(
+      controller: passwordController,
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
         if (value.isEmpty) {
@@ -119,26 +148,32 @@ class _LoginFormState extends State<LoginForm> {
           )),
     );
 
-    final loginButton = Container(
-        child: Theme.of(context).platform == TargetPlatform.iOS
-            ? CupertinoButton(
-                color: Theme.of(context).accentColor,
-                onPressed: () {
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text('Submit button pressed')));
-                },
-                child: Container(
-                    child: Text(
-                  'Submit',
-                )))
-            : RaisedButton(
-                color: Theme.of(context).primaryColor,
-                onPressed: _handleSignIn,
-                // then((FirebaseUser user) => )
-                //   .catchError((e) => print(e));
-                child: Container(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(
+    final loginButton = _isloading
+        ? Container(
+            child: CircularProgressIndicator(),
+            padding: EdgeInsets.all(12.0),
+          )
+        : Container(
+            child: Theme.of(context).platform == TargetPlatform.iOS
+                ? CupertinoButton(
+                    padding: EdgeInsets.all(12.0),
+                    color: Theme.of(context).accentColor,
+                    onPressed: () {
+                      Scaffold.of(context).showSnackBar(
+                          SnackBar(content: Text('Submit button pressed')));
+                    },
+                    child: Container(
+                        child: Text(
+                      'Submit',
+                    )))
+                : RaisedButton(
+                    padding: EdgeInsets.all(12.0),
+                    color: Theme.of(context).primaryColor,
+                    onPressed: _handleSignIn,
+                    // then((FirebaseUser user) => )
+                    //   .catchError((e) => print(e));
+                    child: Container(
+                        child: Text(
                       'Submit',
                       style: TextStyle(fontSize: 18.0, color: Colors.white),
                     ))));
@@ -187,5 +222,13 @@ class _LoginFormState extends State<LoginForm> {
                         color: Theme.of(context).accentColor, fontSize: 18.0),
                   ))))
     ]));
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the Widget is removed from the Widget tree
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

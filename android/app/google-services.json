@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "771624408982",
+    "firebase_url": "https://kitty-mingsi.firebaseio.com",
+    "project_id": "kitty-mingsi",
+    "storage_bucket": "kitty-mingsi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771624408982:android:5e9f7503f02ecb0c",
+        "android_client_info": {
+          "package_name": "com.kittymingsi.kittymingsiflutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "771624408982-hecmad63tt6i4bkuuujgecgmfu93br6t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFbEJa3A3WCiyLdlYo55vQfuf7WFUn2YQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
