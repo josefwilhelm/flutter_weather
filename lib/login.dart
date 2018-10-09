@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart'; //new
+import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
+
 
 class Login extends StatefulWidget {
+
   _LoginState createState() => _LoginState();
 }
-
 
 class _LoginState extends State<Login> {
   // Initially password is obscure
@@ -45,12 +48,28 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   bool _obscureText = true;
 
+  String email = "test@test.com";
+  String password = "123456";
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   // Toggles the password show status
   void _toggle() {
     setState(() {
       _obscureText = !_obscureText;
     });
   }
+
+  Future<FirebaseUser> _handleSignIn() async {
+  FirebaseUser user = await _auth.signInWithEmailAndPassword(
+    email: email,
+    password: password
+  );
+
+  print("signed in " + user.displayName);
+
+  Navigator.pushReplacementNamed(context, "/home");
+  return user;
+}
 
   @override
   Widget build(BuildContext context) {
@@ -114,9 +133,9 @@ class _LoginFormState extends State<LoginForm> {
                 )))
             : RaisedButton(
                 color: Theme.of(context).primaryColor,
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, "/home");
-                },
+                onPressed: _handleSignIn,
+                // then((FirebaseUser user) => )
+                //   .catchError((e) => print(e));
                 child: Container(
                     padding: const EdgeInsets.all(12.0),
                     child: Text(
