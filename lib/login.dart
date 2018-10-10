@@ -4,36 +4,24 @@ import 'package:flutter/cupertino.dart'; //new
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 
-class Login extends StatefulWidget {
-  _LoginState createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-  // Initially password is obscure
-
+class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: const Color(0xFFF7EBE8),
       body: Container(
         padding: const EdgeInsets.all(28.0),
-        child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.stretch,
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 60.0,
-              ),
-              Expanded(
-                child: Icon(
-                  IconData(0xe3ea, fontFamily: 'MaterialIcons'),
-                  size: 120.0,
-                  color: Theme.of(context).primaryColor,
-                ),
-                flex: 1,
-              ),
-              Expanded(flex: 3, child: LoginForm()),
-            ]),
+        child: Column(children: [
+          SizedBox(
+            height: 48.0,
+          ),
+          Icon(
+            FontAwesomeIcons.paw,
+            size: 80.0,
+            color: Theme.of(context).primaryColor,
+          ),
+          SizedBox(height: 24.0),
+          Expanded(flex: 3, child: LoginForm()),
+        ]),
       ),
     );
   }
@@ -44,10 +32,8 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  bool _obscureText = true;
-
-  String email = "test@test.com";
-  String password = "123456";
+  final _formKey = GlobalKey<FormState>();
+  bool hidePassword = true;
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -56,9 +42,9 @@ class _LoginFormState extends State<LoginForm> {
   bool _isloading = false;
 
   // Toggles the password show status
-  void _toggle() {
+  void _togglePassword() {
     setState(() {
-      _obscureText = !_obscureText;
+      hidePassword = !hidePassword;
     });
   }
 
@@ -68,40 +54,11 @@ class _LoginFormState extends State<LoginForm> {
     });
   }
 
-  Future<FirebaseUser> _handleSignIn() async {
-    setIsLoading(true);
-
-    assert()
-
-    String email = emailController.text;
-    String password = passwordController.text;
-
-    if (password.isEmpty || email.isEmpty) {
-      setIsLoading(false);
-      return null;
-    }
-
-    FirebaseUser user = await _auth
-        .signInWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text)
-        .then((user) {
-      setIsLoading(false);
-      Navigator.pushNamed(
-          context, "/home"); //TODO replace with replacewithNamed
-    }).catchError((e) {
-      Scaffold.of(context)
-          .showSnackBar(SnackBar(content: Text('Wrong username or password!')));
-      setIsLoading(false);
-      return null;
-    });
-
-    return user;
-  }
-
   @override
   Widget build(BuildContext context) {
     final email = TextFormField(
       controller: emailController,
+      validator: _validateEmail,
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       decoration: InputDecoration(
@@ -120,13 +77,9 @@ class _LoginFormState extends State<LoginForm> {
     final password = TextFormField(
       controller: passwordController,
       keyboardType: TextInputType.emailAddress,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter some text';
-        }
-      },
+      validator: _validatePassword,
       autofocus: false,
-      obscureText: _obscureText,
+      obscureText: hidePassword,
       decoration: InputDecoration(
           icon: Icon(
             FontAwesomeIcons.lock,
@@ -135,9 +88,9 @@ class _LoginFormState extends State<LoginForm> {
           labelText: "Password",
           hintText: "****",
           suffixIcon: GestureDetector(
-              onTap: _toggle,
+              onTap: _togglePassword,
               child: Icon(
-                _obscureText ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash,
+                hidePassword ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash,
                 size: 20.0,
               )),
           border: UnderlineInputBorder(
@@ -158,10 +111,7 @@ class _LoginFormState extends State<LoginForm> {
                 ? CupertinoButton(
                     padding: EdgeInsets.all(12.0),
                     color: Theme.of(context).accentColor,
-                    onPressed: () {
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text('Submit button pressed')));
-                    },
+                    onPressed: _handleSignIn,
                     child: Container(
                         child: Text(
                       'Submit',
@@ -178,57 +128,106 @@ class _LoginFormState extends State<LoginForm> {
                       style: TextStyle(fontSize: 18.0, color: Colors.white),
                     ))));
 
-    return Container(
+    final formHeadline = Text("Login",
+        style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 22.0,
+            fontWeight: FontWeight.bold));
+
+    final registerButton = Container(
+        child: Theme.of(context).platform == TargetPlatform.iOS
+            ? CupertinoButton(
+                color: Theme.of(context).primaryColor,
+                onPressed: _onRegisterPressed,
+                child: Container(
+                    child: Text(
+                  'Register',
+                  style: TextStyle(
+                      color: Theme.of(context).accentColor, fontSize: 18.0),
+                )))
+            : FlatButton(
+                onPressed: _onRegisterPressed,
+                child: Container(
+                    child: Text(
+                  'Register',
+                  style: TextStyle(
+                      color: Theme.of(context).accentColor, fontSize: 18.0),
+                ))));
+
+    return Form(
+      key: _formKey,
+      child: Container(
+          child: SingleChildScrollView(
         child: Column(children: [
-      Text("Login",
-          style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 22.0,
-              fontWeight: FontWeight.bold)),
-      SizedBox(height: 16.0),
-      email,
-      SizedBox(height: 16.0),
-      password,
-      SizedBox(
-        height: 28.0,
-      ),
-      loginButton,
-      SizedBox(
-        height: 12.0,
-      ),
-      Container(
-          child: Theme.of(context).platform == TargetPlatform.iOS
-              ? CupertinoButton(
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    Scaffold.of(context).showSnackBar(
-                        SnackBar(content: Text('Register button pressed')));
-                  },
-                  child: Container(
-                      child: Text(
-                    'Register',
-                    style: TextStyle(
-                        color: Theme.of(context).accentColor, fontSize: 18.0),
-                  )))
-              : FlatButton(
-                  onPressed: () {
-                    Scaffold.of(context).showSnackBar(
-                        SnackBar(content: Text('Register button pressed')));
-                  },
-                  child: Container(
-                      child: Text(
-                    'Register',
-                    style: TextStyle(
-                        color: Theme.of(context).accentColor, fontSize: 18.0),
-                  ))))
-    ]));
+          formHeadline,
+          SizedBox(height: 16.0),
+          email,
+          SizedBox(height: 16.0),
+          password,
+          SizedBox(height: 28.0),
+          loginButton,
+          SizedBox(height: 12.0),
+          registerButton
+        ]),
+      )),
+    );
   }
 
-  @override
-  void dispose() {
-    // Clean up the controller when the Widget is removed from the Widget tree
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
+  String _validatePassword(String value) {
+    if (value.isEmpty) {
+      return "Password can't be empty!";
+    }
+  }
+
+  void _onRegisterPressed() {
+    if (_formKey.currentState.validate()) {
+      Scaffold.of(context)
+          .showSnackBar(SnackBar(content: Text('Register button pressed')));
+    }
+
+    @override
+    void dispose() {
+      // Clean up the controller when the Widget is removed from the Widget tree
+      emailController.dispose();
+      passwordController.dispose();
+      super.dispose();
+    }
+  }
+
+  Future<FirebaseUser> _handleSignIn() async {
+    if (_formKey.currentState.validate()) {
+      setIsLoading(true);
+
+      String email = emailController.text;
+      String password = passwordController.text;
+
+      if (password.isEmpty || email.isEmpty) {
+        setIsLoading(false);
+        return null;
+      }
+
+      FirebaseUser user = await _auth
+          .signInWithEmailAndPassword(
+              email: emailController.text, password: passwordController.text)
+          .then((user) {
+        Navigator.pushNamed(
+            context, "/home"); //TODO replace with replacewithNamed
+      }).catchError((e) {
+        setIsLoading(false);
+        return null;
+      });
+
+      return user;
+    }
+  }
+
+  String _validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Enter Valid Email';
+    else
+      return null;
   }
 }
