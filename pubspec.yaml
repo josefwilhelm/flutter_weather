@@ -29,6 +29,8 @@ dependencies:
 
   charts_flutter: ^0.4.0
 
+  cloud_firestore: ^0.8.1
+
 
 
 dev_dependencies:

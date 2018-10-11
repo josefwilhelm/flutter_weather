@@ -1,3 +1,4 @@
+import 'dataRepository.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -16,10 +17,11 @@ class MyApp extends StatelessWidget {
             textTheme: Theme.of(context)
                 .textTheme
                 .apply(bodyColor: const Color(0xFF53687E))),
-        initialRoute: "/home",
+        initialRoute: "/data",
         routes: {
           "/": (context) => Login(),
-          "/home": (context) => MyHomePage()
+          "/home": (context) => MyHomePage(),
+          "/data": (context) => DataRepository()
         });
   }
 }
