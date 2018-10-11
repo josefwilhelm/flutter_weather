@@ -180,18 +180,18 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _onRegisterPressed() {
-    if (_formKey.currentState.validate()) {
-      Scaffold.of(context)
-          .showSnackBar(SnackBar(content: Text('Register button pressed')));
-    }
+    Navigator.pushNamed(context, "/home");
+    // if (_formKey.currentState.validate()) {
+    //   Scaffold.of(context)
+    //       .showSnackBar(SnackBar(content: Text('Register button pressed')));
+  }
 
-    @override
-    void dispose() {
-      // Clean up the controller when the Widget is removed from the Widget tree
-      emailController.dispose();
-      passwordController.dispose();
-      super.dispose();
-    }
+  @override
+  void dispose() {
+    // Clean up the controller when the Widget is removed from the Widget tree
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   Future<FirebaseUser> _handleSignIn() async {

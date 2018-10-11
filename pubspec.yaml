@@ -29,6 +29,8 @@ dependencies:
 
   charts_flutter: ^0.4.0
 
+  sticky_headers: "^0.1.7"
+
 
 
 dev_dependencies:
