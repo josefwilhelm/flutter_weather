@@ -1,6 +1,8 @@
 import 'dataRepository.dart';
 import 'package:flutter/material.dart';
-import 'login.dart';
+import 'screens/login.dart';
+import 'screens/bottomNavigation.dart';
+import 'screens/settings.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 void main() => runApp(new MyApp());
@@ -12,15 +14,19 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
         title: 'Flutter Demo',
         theme: new ThemeData(
-            primaryColor: const Color(0xFF82AC9F),
+            brightness: Brightness.light,
+            primaryColor: const Color(0xFF67697C),
+            // primaryColor: const Color(0xFF82AC9F),
             accentColor: const Color(0xFF82AC9F),
             textTheme: Theme.of(context)
                 .textTheme
                 .apply(bodyColor: const Color(0xFF53687E))),
-        initialRoute: "/data",
+        initialRoute: "/",
         routes: {
           "/": (context) => Login(),
           "/home": (context) => MyHomePage(),
+          "/settings": (context) => SettingsWidget(),
+          "/start": (context) => BottomNavigationWidget(),
           "/data": (context) => DataRepository()
         });
   }
@@ -78,12 +84,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 }),
                             Container(
                                 height: 300.0,
-                                child: AreaAndLineChart.withSampleData()),
+                                child: Card(
+                                    color: Theme.of(context).accentColor,
+                                    child: AreaAndLineChart.withSampleData())),
                             RaisedButton(
                                 child: Text("Click me"),
                                 onPressed: () {
-                                  Scaffold.of(context).showSnackBar(
-                                      SnackBar(content: Text('Halloooooooo')));
+                                  Navigator.pushNamed(context, "/settings");
                                 }),
                             Container(
                                 height: 300.0,
