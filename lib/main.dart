@@ -6,6 +6,7 @@ import 'screens/settings.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:bloc/bloc.dart';
 import 'bloc/AuthenticationBloc.dart';
+import 'dart:async';
 
 void main() => runApp(new MyApp());
 
@@ -61,6 +62,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isLoading = true;
+  var _data;
+
+  @override
+  void initState() {
+    dummy();
+  }
+
+  void dummy() async {
+    await _loadChart();
+    isLoading = false;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -95,8 +110,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           Container(
                               height: 300.0,
                               child: Card(
-                                  color: Theme.of(context).accentColor,
-                                  child: AreaAndLineChart.withSampleData())),
+                                color: Theme.of(context).accentColor,
+                                child: isLoading ? Container() : _data,
+                              )),
                           RaisedButton(
                               child: Text("Click me"),
                               onPressed: () {
@@ -104,44 +120,20 @@ class _MyHomePageState extends State<MyHomePage> {
                               }),
                           Container(
                               height: 300.0,
-                              child: AreaAndLineChart.withSampleData()),
+                              child: isLoading ? Container() : _data)
                         ]),
                   ),
                 ],
               )),
     );
   }
-}
 
-class AreaAndLineChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
-
-  AreaAndLineChart(this.seriesList, {this.animate});
-
-  /// Creates a [LineChart] with sample data and no transition.
-  factory AreaAndLineChart.withSampleData() {
-    return new AreaAndLineChart(
-      _createSampleData(),
-      // Disable animations for image tests.
-      animate: false,
-    );
+  Future<void> _loadChart() async {
+    _data = AreaAndLineChart(_createSampleData());
+    return Future.delayed(Duration(seconds: 1));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return new charts.TimeSeriesChart(
-      seriesList,
-      animate: true,
-      // Optionally pass in a [DateTimeFactory] used by the chart. The factory
-      // should create the same type of [DateTime] as the data provided. If none
-      // specified, the default creates local date time.
-      // dateTimeFactory: const charts.LocalDateTimeFactory(),
-    );
-  }
-
-  /// Create one series with sample hard coded data.
-  static List<charts.Series<WeatherValue, DateTime>> _createSampleData() {
+  List<charts.Series<WeatherValue, DateTime>> _createSampleData() {
     final data = [
       new WeatherValue(new DateTime(2017, 9, 10), 5),
       new WeatherValue(new DateTime(2017, 9, 11), 25),
@@ -165,7 +157,21 @@ class AreaAndLineChart extends StatelessWidget {
   }
 }
 
-/// Sample time series data type.
+class AreaAndLineChart extends StatelessWidget {
+  final List<charts.Series> seriesList;
+  final bool animate;
+
+  AreaAndLineChart(this.seriesList, {this.animate});
+
+  @override
+  Widget build(BuildContext context) {
+    return new charts.TimeSeriesChart(
+      seriesList,
+      animate: true,
+    );
+  }
+}
+
 class WeatherValue {
   final DateTime time;
   final int temp;

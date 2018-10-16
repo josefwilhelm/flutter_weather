@@ -16,6 +16,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final AuthenticationBloc authBloc;
+  var _authState;
   final _formKey = GlobalKey<FormState>();
   bool hidePassword = true;
   bool _autovalidate = false;
@@ -37,6 +38,7 @@ class _LoginFormState extends State<LoginForm> {
           BuildContext context,
           AuthenticationState authState,
         ) {
+          _authState = authState;
           if (authState.token.isNotEmpty) {
             Navigator.push(
                 context,

@@ -54,6 +54,13 @@ class _LoginState extends State<Login> {
           ),
           SizedBox(height: 24.0),
           Expanded(flex: 3, child: _widgets[_currentIndex]),
+          SizedBox(height: 24.0),
+          RaisedButton(
+            child: Text("go to home"),
+            onPressed: () {
+              Navigator.pushNamed(context, "/start");
+            },
+          )
         ]),
       ),
     );
