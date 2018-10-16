@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../components/StandardButtonWidget.dart';
+import '../bloc/AuthenticationBloc.dart';
+import 'package:bloc/bloc.dart';
+import '../bloc/events/AuthenticationEvent.dart';
+import '../bloc/states/AuthenticationState.dart';
+import '../screens/bottomNavigation.dart';
 
 class LoginForm extends StatefulWidget {
-  _LoginFormState createState() => _LoginFormState();
+  AuthenticationBloc authBloc;
+  LoginForm(this.authBloc);
+
+  _LoginFormState createState() => _LoginFormState(authBloc);
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final AuthenticationBloc authBloc;
   final _formKey = GlobalKey<FormState>();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   bool hidePassword = true;
   bool _autovalidate = false;
   bool _isloading = false;
@@ -18,31 +25,50 @@ class _LoginFormState extends State<LoginForm> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  _LoginFormState(this.authBloc);
+
   @override
   Widget build(BuildContext context) {
     color = Theme.of(context).accentColor;
-    return Form(
-      key: _formKey,
-      autovalidate: _autovalidate,
-      child: Container(
-          child: SingleChildScrollView(
-        child: Column(children: [
-          _headline(),
-          SizedBox(height: 16.0),
-          _emailForm(),
-          SizedBox(height: 16.0),
-          _passwordField(),
-          SizedBox(height: 28.0),
-          _isloading
-              ? Container(
-                  child: CircularProgressIndicator(),
-                  padding: EdgeInsets.all(12.0),
-                )
-              : StandardButton(
-                  onPress: _handleSignIn, title: "Login", buttonColor: color),
-        ]),
-      )),
-    );
+
+    return BlocBuilder<AuthenticationEvent, AuthenticationState>(
+        bloc: authBloc,
+        builder: (
+          BuildContext context,
+          AuthenticationState authState,
+        ) {
+          if (authState.token.isNotEmpty) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => BottomNavigationWidget()));
+          }
+
+          return Form(
+            key: _formKey,
+            autovalidate: _autovalidate,
+            child: Container(
+                child: SingleChildScrollView(
+              child: Column(children: [
+                _headline(),
+                SizedBox(height: 16.0),
+                _emailForm(),
+                SizedBox(height: 16.0),
+                _passwordField(),
+                SizedBox(height: 28.0),
+                authState.isLoading
+                    ? Container(
+                        child: CircularProgressIndicator(),
+                        padding: EdgeInsets.all(12.0),
+                      )
+                    : StandardButton(
+                        onPress: _handleSignIn,
+                        title: "Login",
+                        buttonColor: color),
+              ]),
+            )),
+          );
+        });
   }
 
   TextFormField _passwordField() {
@@ -124,29 +150,11 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
-  void _handleSignIn() async {
+  void _handleSignIn() {
     _autovalidate = true;
     if (_formKey.currentState.validate()) {
-      setIsLoading(true);
-
-      String email = emailController.text;
-      String password = passwordController.text;
-
-      if (password.isEmpty || email.isEmpty) {
-        setIsLoading(false);
-      }
-
-      try {
-        await _auth
-            .signInWithEmailAndPassword(
-                email: emailController.text, password: passwordController.text)
-            .then((user) {
-          Navigator.pushNamed(
-              context, "/home"); //TODO replace with replacewithNamed
-        });
-      } catch (e) {
-        setIsLoading(false);
-      }
+      authBloc.onLoginButtonPressed(
+          email: emailController.text, password: passwordController.text);
     }
   }
 

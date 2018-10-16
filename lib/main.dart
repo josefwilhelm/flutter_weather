@@ -4,15 +4,29 @@ import 'screens/login.dart';
 import 'screens/bottomNavigation.dart';
 import 'screens/settings.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:bloc/bloc.dart';
+import 'bloc/AuthenticationBloc.dart';
 
 void main() => runApp(new MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  final AuthenticationBloc _authBloc = AuthenticationBloc();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
         title: 'Flutter Demo',
+        routes: {
+          "/home": (context) => MyHomePage(),
+          "/settings": (context) => SettingsWidget(),
+          "/start": (context) => BottomNavigationWidget(),
+          "/data": (context) => DataRepository()
+        },
         theme: new ThemeData(
             brightness: Brightness.light,
             primaryColor: const Color(0xFF67697C),
@@ -21,14 +35,10 @@ class MyApp extends StatelessWidget {
             textTheme: Theme.of(context)
                 .textTheme
                 .apply(bodyColor: const Color(0xFF53687E))),
-        initialRoute: "/",
-        routes: {
-          "/": (context) => Login(),
-          "/home": (context) => MyHomePage(),
-          "/settings": (context) => SettingsWidget(),
-          "/start": (context) => BottomNavigationWidget(),
-          "/data": (context) => DataRepository()
-        });
+        home: BlocProvider(
+          bloc: _authBloc,
+          child: Login(),
+        ));
   }
 }
 
@@ -60,45 +70,46 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return new Scaffold(
-        appBar: new AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: new Text("Look at my charts"), //new Text(widget.title),
-        ),
-        body: Builder(
-            builder: (context) => Column(
-                  children: <Widget>[
-                    Text(
-                      "Yo headline",
-                      style: Theme.of(context).textTheme.display2,
-                    ),
-                    Expanded(
-                      child: ListView(
-                          // padding: EdgeInsets.all(24.0),
-                          children: <Widget>[
-                            RaisedButton(
-                                child: Text("Click me"),
-                                onPressed: () {
-                                  Scaffold.of(context).showSnackBar(
-                                      SnackBar(content: Text('Halloooooooo')));
-                                }),
-                            Container(
-                                height: 300.0,
-                                child: Card(
-                                    color: Theme.of(context).accentColor,
-                                    child: AreaAndLineChart.withSampleData())),
-                            RaisedButton(
-                                child: Text("Click me"),
-                                onPressed: () {
-                                  Navigator.pushNamed(context, "/settings");
-                                }),
-                            Container(
-                                height: 300.0,
-                                child: AreaAndLineChart.withSampleData()),
-                          ]),
-                    ),
-                  ],
-                )));
+      appBar: new AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: new Text("Look at my charts"), //new Text(widget.title),
+      ),
+      body: Builder(
+          builder: (context) => Column(
+                children: <Widget>[
+                  Text(
+                    "Yo headline",
+                    style: Theme.of(context).textTheme.display2,
+                  ),
+                  Expanded(
+                    child: ListView(
+                        // padding: EdgeInsets.all(24.0),
+                        children: <Widget>[
+                          RaisedButton(
+                              child: Text("Click me"),
+                              onPressed: () {
+                                Scaffold.of(context).showSnackBar(
+                                    SnackBar(content: Text('Halloooooooo')));
+                              }),
+                          Container(
+                              height: 300.0,
+                              child: Card(
+                                  color: Theme.of(context).accentColor,
+                                  child: AreaAndLineChart.withSampleData())),
+                          RaisedButton(
+                              child: Text("Click me"),
+                              onPressed: () {
+                                Navigator.pushNamed(context, "/settings");
+                              }),
+                          Container(
+                              height: 300.0,
+                              child: AreaAndLineChart.withSampleData()),
+                        ]),
+                  ),
+                ],
+              )),
+    );
   }
 }
 

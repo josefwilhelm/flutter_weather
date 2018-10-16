@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart'; //new
 import 'loginForm.dart';
 import 'registerForm.dart';
+import '../bloc/AuthenticationBloc.dart';
+import 'package:bloc/bloc.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -12,10 +14,13 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   int _currentIndex = 0;
 
-  final List<Widget> _widgets = [LoginForm(), RegisterForm()];
-
   @override
   Widget build(BuildContext context) {
+    final AuthenticationBloc _authBloc =
+        BlocProvider.of(context) as AuthenticationBloc;
+
+    final List<Widget> _widgets = [LoginForm(_authBloc), RegisterForm()];
+
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         // type: BottomNavigationBarType.shifting,

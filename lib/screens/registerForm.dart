@@ -149,16 +149,14 @@ class _RegisterFormState extends State<RegisterForm> {
       }
 
       try {
-        await _auth
-            .createUserWithEmailAndPassword(
-                email: _emailController.text,
-                password: _passwordController.text)
-            .then((user) {
-          _successful = true;
-          setIsLoading(false);
-          // Navigator.pushNamed(
-          //     context, "/home"); //TODO replace with replacewithNamed
-        });
+        await _auth.createUserWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
+        //     .then((user) {
+        //   _successful = true;
+        //   setIsLoading(false);
+        //   // Navigator.pushNamed(
+        //   //     context, "/home"); //TODO replace with replacewithNamed
+        // });
       } catch (e) {
         setIsLoading(false);
       }
