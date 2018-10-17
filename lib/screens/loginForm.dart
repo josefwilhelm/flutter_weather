@@ -30,7 +30,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    color = Theme.of(context).accentColor;
+    color = Theme.of(context).primaryColor;
 
     return BlocBuilder<AuthenticationEvent, AuthenticationState>(
         bloc: authBloc,
@@ -39,12 +39,6 @@ class _LoginFormState extends State<LoginForm> {
           AuthenticationState authState,
         ) {
           _authState = authState;
-          if (authState.token.isNotEmpty) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => BottomNavigationWidget()));
-          }
 
           return Form(
             key: _formKey,

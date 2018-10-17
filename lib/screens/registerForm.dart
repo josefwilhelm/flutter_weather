@@ -23,7 +23,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
-    color = Theme.of(context).primaryColor;
+    color = Theme.of(context).accentColor;
     return Form(
       key: _formKey,
       autovalidate: _autovalidate,

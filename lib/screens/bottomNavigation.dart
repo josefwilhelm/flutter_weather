@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../dataRepository.dart';
 import '../main.dart';
+import 'home.dart';
 import 'settings.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
@@ -10,14 +11,12 @@ class BottomNavigationWidget extends StatefulWidget {
 
 class _BottomNavigaitonWidgetState extends State<BottomNavigationWidget> {
   int _currentIndex = 0;
-  final List<Widget> _widgets = [
-    MyHomePage(),
-    SettingsWidget(),
-    DataRepository()
-  ];
+  final List<Widget> _widgets = [Home(), SettingsWidget(), Home()];
 
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).primaryColor;
+
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.shifting,
@@ -25,17 +24,17 @@ class _BottomNavigaitonWidgetState extends State<BottomNavigationWidget> {
         onTap: _onTabTapped, // this will be set when a new tab is tapped
         items: [
           BottomNavigationBarItem(
-            backgroundColor: Colors.red,
+            backgroundColor: color,
             icon: Icon(FontAwesomeIcons.home),
             title: new Text('Home'),
           ),
           BottomNavigationBarItem(
-            backgroundColor: Colors.green,
+            backgroundColor: color,
             icon: Icon(FontAwesomeIcons.wrench),
             title: new Text('Settings'),
           ),
           BottomNavigationBarItem(
-              backgroundColor: Colors.yellow,
+              backgroundColor: color,
               icon: Icon(FontAwesomeIcons.database),
               title: Text('Database'))
         ],

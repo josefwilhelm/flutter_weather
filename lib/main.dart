@@ -23,8 +23,8 @@ class MyAppState extends State<MyApp> {
         },
         theme: new ThemeData(
             brightness: Brightness.light,
-            primaryColor: const Color(0xFF67697C),
-            accentColor: const Color(0xFF82AC9F),
+            primaryColor: const Color(0xFF82AC9F),
+            accentColor: const Color(0xFF67697C),
             textTheme: Theme.of(context)
                 .textTheme
                 .apply(bodyColor: const Color(0xFF53687E))),
