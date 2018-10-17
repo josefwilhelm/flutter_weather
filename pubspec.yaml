@@ -31,7 +31,9 @@ dependencies:
 
   sticky_headers: "^0.1.7"
 
+  cloud_firestore: ^0.8.1
 
+  bloc: ^0.4.2
 
 dev_dependencies:
   flutter_test:
