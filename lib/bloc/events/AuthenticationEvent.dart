@@ -15,3 +15,5 @@ class RegisterButtonPressed extends AuthenticationEvent {
 
   RegisterButtonPressed({@required this.username, @required this.password});
 }
+
+class LogoutPressed extends AuthenticationEvent {}

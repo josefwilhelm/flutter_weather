@@ -20,35 +20,26 @@ class _HomeState extends State<Home> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-          body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            expandedHeight: 200.0,
-            title: Text("Dashboard"),
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Icon(Icons.donut_large),
-            ),
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                  icon: Icon(FontAwesomeIcons.wineGlass),
-                  text: "Rain",
-                ),
-                Tab(icon: Icon(FontAwesomeIcons.ravelry), text: "Temperature"),
-              ],
-            ),
+        appBar: AppBar(
+          title: Text("Dashboard"),
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                icon: Icon(FontAwesomeIcons.wineGlass),
+                text: "Rain",
+              ),
+              Tab(icon: Icon(FontAwesomeIcons.ravelry), text: "Temperature"),
+            ],
           ),
-          SliverFillRemaining(
-              child: TabBarView(children: [
-            RefreshIndicator(
-                key: _refreshIndicatorKey,
-                onRefresh: _refresh,
-                child: _listView(Colors.red[200])),
-            _listView(Colors.blue[200]),
-          ]))
-        ],
-      )),
+        ),
+        body: TabBarView(children: [
+          RefreshIndicator(
+              key: _refreshIndicatorKey,
+              onRefresh: _refresh,
+              child: _listView(Colors.grey[100])),
+          _listView(Colors.grey[200]),
+        ]),
+      ),
     );
   }
 

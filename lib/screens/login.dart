@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart'; //new
 import 'loginForm.dart';
 import 'registerForm.dart';
 import 'package:bloc/bloc.dart';
-import 'dart:async';
+import '../bloc/AuthenticationBloc.dart';
 
 import '../bloc/events/AuthenticationEvent.dart';
 import '../bloc/states/AuthenticationState.dart';
@@ -19,7 +19,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final _authBloc = BlocProvider.of(context);
+    final AuthenticationBloc _authBloc = AuthenticationBloc();
 
     final List<Widget> _widgets = [LoginForm(_authBloc), RegisterForm()];
 
@@ -29,11 +29,6 @@ class _LoginState extends State<Login> {
           context,
           AuthenticationState authState,
         ) {
-          if (authState.token.isNotEmpty) {
-            _wait();
-            Navigator.of(context).pushReplacementNamed("/start");
-          }
-
           return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
               // type: BottomNavigationBarType.shifting,
@@ -78,10 +73,6 @@ class _LoginState extends State<Login> {
             ),
           );
         });
-  }
-
-  Future<void> _wait() async {
-    await Future.delayed(Duration(seconds: 5));
   }
 
   _onTabTapped(int index) {

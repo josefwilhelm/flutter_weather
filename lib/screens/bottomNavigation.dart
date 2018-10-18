@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../dataRepository.dart';
-import '../main.dart';
 import 'home.dart';
 import 'settings.dart';
 

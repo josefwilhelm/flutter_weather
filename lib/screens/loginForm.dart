@@ -5,7 +5,6 @@ import '../bloc/AuthenticationBloc.dart';
 import 'package:bloc/bloc.dart';
 import '../bloc/events/AuthenticationEvent.dart';
 import '../bloc/states/AuthenticationState.dart';
-import '../screens/bottomNavigation.dart';
 
 class LoginForm extends StatefulWidget {
   AuthenticationBloc authBloc;
@@ -16,11 +15,10 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final AuthenticationBloc authBloc;
-  var _authState;
+  AuthenticationState _authState;
   final _formKey = GlobalKey<FormState>();
   bool hidePassword = true;
   bool _autovalidate = false;
-  bool _isloading = false;
   var color;
 
   TextEditingController emailController = TextEditingController();
@@ -30,6 +28,9 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    //DEBUG
+    emailController.text = "test@test.com";
+    passwordController.text = "123456";
     color = Theme.of(context).primaryColor;
 
     return BlocBuilder<AuthenticationEvent, AuthenticationState>(
@@ -58,7 +59,7 @@ class _LoginFormState extends State<LoginForm> {
                         padding: EdgeInsets.all(12.0),
                       )
                     : StandardButton(
-                        onPress: _handleSignIn,
+                        onPress: () => _handleSignIn(context),
                         title: "Login",
                         buttonColor: color),
               ]),
@@ -132,12 +133,6 @@ class _LoginFormState extends State<LoginForm> {
     });
   }
 
-  void setIsLoading(bool isLoading) {
-    setState(() {
-      _isloading = isLoading;
-    });
-  }
-
   @override
   void dispose() {
     // Clean up the controller when the Widget is removed from the Widget tree
@@ -146,10 +141,10 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
-  void _handleSignIn() {
+  void _handleSignIn(BuildContext context) {
     _autovalidate = true;
     if (_formKey.currentState.validate()) {
-      authBloc.onLoginButtonPressed(
+      authBloc.onLoginButtonPressed(context,
           email: emailController.text, password: passwordController.text);
     }
   }
