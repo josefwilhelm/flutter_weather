@@ -74,7 +74,7 @@ class _DataRepositoryState extends State<DataRepository> {
   void _addNewStation() {
     try {
       Firestore.instance.collection("stations").document().setData({
-        'stationName': 'station2', // + (documents.length + 1).toString(),
+        'stationName': 'station' + (documents.length + 1).toString(),
         'userId': user.uid
       }).catchError((e) => debugPrint(e.toString()));
     } catch (e) {
@@ -83,14 +83,15 @@ class _DataRepositoryState extends State<DataRepository> {
   }
 
   void _getStations() {
-    FirebaseAuth.instance.currentUser().then((user) {
+    FirebaseAuth.instance.currentUser().then((tempUser) {
       try {
+        user = tempUser;
         stations
             .where("userId", isEqualTo: user.uid)
             .getDocuments()
             .then((value) {
           documents = value.documents;
-          user = user;
+
           debugPrint("number of stations: " + documents.length.toString());
           debugPrint("user: " + user.email);
         });
@@ -102,7 +103,7 @@ class _DataRepositoryState extends State<DataRepository> {
   }
 
   void _addDataPeriodically() {
-    Timer.periodic(Duration(minutes: 5), (Timer t) => _addData());
+    Timer.periodic(Duration(minutes: 15), (Timer t) => _addData());
   }
 
   void _addData() {
@@ -120,7 +121,7 @@ class _DataRepositoryState extends State<DataRepository> {
             'timestamp': timestamp
           })
           .then((document) =>
-              debugPrint("written to firestore: " + timestamp.toString()))
+              debugPrint("written to document: " + document.documentID))
           .catchError((error) => debugPrint(error.toString()));
     });
   }
