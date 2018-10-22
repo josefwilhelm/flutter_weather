@@ -19,7 +19,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthenticationBloc _authBloc = AuthenticationBloc();
+    final AuthenticationBloc _authBloc = BlocProvider.of(context);
 
     final List<Widget> _widgets = [LoginForm(_authBloc), RegisterForm()];
 
@@ -63,12 +63,12 @@ class _LoginState extends State<Login> {
                 SizedBox(height: 24.0),
                 Expanded(flex: 3, child: _widgets[_currentIndex]),
                 SizedBox(height: 24.0),
-                RaisedButton(
-                  child: Text("go to home"),
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/start");
-                  },
-                )
+                // RaisedButton(
+                //   child: Text("go to home"),
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, "/start");
+                //   },
+                // )
               ]),
             ),
           );

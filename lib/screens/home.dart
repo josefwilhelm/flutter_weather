@@ -13,6 +13,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  var toggle = false;
+
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   @override
@@ -83,13 +85,38 @@ class _HomeState extends State<Home> {
         header: HeaderCart(title),
         content: Column(
           children: <Widget>[
-            Container(
-                height: 300.0,
-                child: Card(
-                    margin: EdgeInsets.all(8.0),
-                    color: color,
-                    child: AreaAndLineChart(_createSampleData()))),
-            _button()
+            Stack(
+              alignment: const Alignment(0.9, -0.9),
+              children: <Widget>[
+                Container(
+                    height: 300.0,
+                    child: Card(
+                        margin: EdgeInsets.all(8.0),
+                        color: color,
+                        child: AreaAndLineChart(_createSampleData()))),
+                GestureDetector(
+                  onTap: () {
+                    toggle = !toggle;
+                    setState(() {});
+                  },
+                  child: Container(
+                      width: 32.0,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                      ),
+                      child: Icon(
+                        toggle ? Icons.favorite_border : Icons.favorite,
+                        color: toggle
+                            ? Colors.black
+                            : Theme.of(context).primaryColor,
+                      )),
+                )
+              ],
+            ),
+            _button(),
+            SizedBox(
+              height: 24.0,
+            )
           ],
         ));
   }
