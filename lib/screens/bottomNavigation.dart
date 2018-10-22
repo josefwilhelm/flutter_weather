@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'home.dart';
 import 'settings.dart';
+import '../dataRepository.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
   _BottomNavigaitonWidgetState createState() => _BottomNavigaitonWidgetState();
@@ -9,7 +10,7 @@ class BottomNavigationWidget extends StatefulWidget {
 
 class _BottomNavigaitonWidgetState extends State<BottomNavigationWidget> {
   int _currentIndex = 0;
-  final List<Widget> _widgets = [Home(), SettingsWidget(), Home()];
+  final List<Widget> _widgets = [Home(), SettingsWidget(), DataRepository()];
 
   @override
   Widget build(BuildContext context) {

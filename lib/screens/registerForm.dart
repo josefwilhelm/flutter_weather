@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../components/StandardButtonWidget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterForm extends StatefulWidget {
   _RegisterFormState createState() => _RegisterFormState();
@@ -23,6 +24,10 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
+    _emailController.text = "test@test.com";
+    _passwordController.text = "123456";
+    _emailRepeatController.text = "test@test.com";
+    _passwordRepeatController.text = "123456";
     color = Theme.of(context).accentColor;
     return Form(
       key: _formKey,
@@ -149,14 +154,17 @@ class _RegisterFormState extends State<RegisterForm> {
       }
 
       try {
-        await _auth.createUserWithEmailAndPassword(
-            email: _emailController.text, password: _passwordController.text);
-        //     .then((user) {
-        //   _successful = true;
-        //   setIsLoading(false);
-        //   // Navigator.pushNamed(
-        //   //     context, "/home"); //TODO replace with replacewithNamed
-        // });
+        await _auth
+            .createUserWithEmailAndPassword(
+                email: _emailController.text,
+                password: _passwordController.text)
+            .then((user) {
+          //TODO move
+          Firestore.instance
+              .collection("users")
+              .document(user.uid)
+              .setData({'email': user.email});
+        });
       } catch (e) {
         setIsLoading(false);
       }
@@ -184,8 +192,8 @@ class _RegisterFormState extends State<RegisterForm> {
   String _validatePassword(String value) {
     if (value.isEmpty) {
       return "Password can't be empty!";
-    } else if (value.length < 7) {
-      return 'Password needs to be at least 8 characters long';
+    } else if (value.length < 5) {
+      return 'Password needs to be at least 6 characters long';
     }
   }
 
