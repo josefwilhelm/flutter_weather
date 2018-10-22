@@ -9,7 +9,7 @@ class BottomNavigationWidget extends StatefulWidget {
 }
 
 class _BottomNavigaitonWidgetState extends State<BottomNavigationWidget> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   final List<Widget> _widgets = [Home(), SettingsWidget(), DataRepository()];
 
   @override
