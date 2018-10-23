@@ -6,10 +6,9 @@ import '../bloc/events/AuthenticationEvent.dart';
 import '../bloc/states/AuthenticationState.dart';
 
 class SettingsWidget extends StatelessWidget {
-  final AuthenticationBloc _authBloc = AuthenticationBloc();
   @override
   Widget build(BuildContext context) {
-    // AuthenticationBloc authBloc = BlocProvider.of(context);
+    AuthenticationBloc _authBloc = BlocProvider.of(context);
     return Scaffold(
         appBar: AppBar(
           title: Text("Settings"),

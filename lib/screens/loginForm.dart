@@ -5,6 +5,7 @@ import '../bloc/AuthenticationBloc.dart';
 import 'package:bloc/bloc.dart';
 import '../bloc/events/AuthenticationEvent.dart';
 import '../bloc/states/AuthenticationState.dart';
+import '../components/DefaultLoadingIndicator.dart';
 
 class LoginForm extends StatefulWidget {
   AuthenticationBloc authBloc;
@@ -55,7 +56,7 @@ class _LoginFormState extends State<LoginForm> {
                 SizedBox(height: 28.0),
                 authState.isLoading
                     ? Container(
-                        child: CircularProgressIndicator(),
+                        child: DefaultLoadingIndicator(),
                         padding: EdgeInsets.all(12.0),
                       )
                     : StandardButton(

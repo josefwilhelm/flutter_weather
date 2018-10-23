@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../components/DefaultLoadingIndicator.dart';
 
 class LoadingFullScreenWidget extends StatelessWidget {
   @override
@@ -7,13 +8,13 @@ class LoadingFullScreenWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          CircularProgressIndicator(),
+          DefaultLoadingIndicator(),
           SizedBox(
             height: 24.0,
           ),
           Text(
             "Loading...",
-            style: Theme.of(context).textTheme.display2,
+            style: Theme.of(context).textTheme.display3,
           )
         ],
       ),

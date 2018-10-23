@@ -6,7 +6,8 @@ import 'bloc/AuthenticationBloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'screens/splash.dart';
 
-void main() => runApp(new MyApp());
+void main() =>
+    runApp(BlocProvider(bloc: AuthenticationBloc(), child: new MyApp()));
 
 class MyApp extends StatefulWidget {
   @override
@@ -14,7 +15,6 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  final AuthenticationBloc _authBloc = AuthenticationBloc();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class MyAppState extends State<MyApp> {
         },
         theme: new ThemeData(
           brightness: Brightness.light,
-          primarySwatch: Colors.amber,
+          primarySwatch: Colors.teal,
           primaryTextTheme:
               Theme.of(context).primaryTextTheme.apply(bodyColor: Colors.white),
         ),
@@ -43,10 +43,7 @@ class MyAppState extends State<MyApp> {
             if (snapshot.hasData) {
               return BottomNavigationWidget();
             }
-            return BlocProvider(
-              bloc: _authBloc,
-              child: Login(),
-            );
+            return Login();
           }
         });
   }
