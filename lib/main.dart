@@ -26,7 +26,7 @@ class MyAppState extends State<MyApp> {
         },
         theme: new ThemeData(
           brightness: Brightness.light,
-          primarySwatch: Colors.teal,
+          primaryColor: Colors.blueGrey,
           primaryTextTheme:
               Theme.of(context).primaryTextTheme.apply(bodyColor: Colors.white),
         ),
