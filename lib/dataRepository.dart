@@ -4,6 +4,8 @@ import 'dart:async';
 import 'components/StandardButtonWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
+import 'bloc/BlocProvider.dart';
+import 'bloc/StationBloc.dart';
 
 class DataRepository extends StatefulWidget {
   _DataRepositoryState createState() => _DataRepositoryState();
@@ -27,9 +29,11 @@ class _DataRepositoryState extends State<DataRepository> {
 
   @override
   Widget build(BuildContext context) {
+    final StationBloc bloc = BlocProvider.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("data"),
+        title: Text(bloc.title),
       ),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.center,

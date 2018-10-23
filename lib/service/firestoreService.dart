@@ -17,6 +17,8 @@ class FirestoreService {
     this.currentUser = user;
     this.usersReference = firestore.collection("users");
     this.stationsReference = firestore.collection("stations");
+
+    _loadData();
   }
 
   void _loadData() {
