@@ -5,14 +5,19 @@ import 'settings.dart';
 import '../dataRepository.dart';
 import '../bloc/BlocProvider.dart';
 import '../bloc/StationBloc.dart';
+import 'Dashboard.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
   _BottomNavigaitonWidgetState createState() => _BottomNavigaitonWidgetState();
 }
 
 class _BottomNavigaitonWidgetState extends State<BottomNavigationWidget> {
-  int _currentIndex = 2;
-  final List<Widget> _widgets = [Home(), SettingsWidget(), DataRepository()];
+  int _currentIndex = 0;
+  final List<Widget> _widgets = [
+    Dashboard(),
+    SettingsWidget(),
+    DataRepository()
+  ];
 
   @override
   Widget build(BuildContext context) {

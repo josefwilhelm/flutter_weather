@@ -208,10 +208,3 @@ class WeatherValue {
 
   WeatherValue(this.time, this.temp);
 }
-
-class WeatherValue1 {
-  final DateTime time;
-  final double temp;
-
-  WeatherValue1(this.time, this.temp);
-}

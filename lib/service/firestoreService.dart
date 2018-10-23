@@ -18,12 +18,12 @@ class FirestoreService {
     this.usersReference = firestore.collection("users");
     this.stationsReference = firestore.collection("stations");
 
-    _loadData();
+    _loadData(user.uid);
   }
 
-  void _loadData() {
+  void _loadData(String userId) {
     //TODO
-    _getAllStationsForUser("").then((allStations) {
+    _getAllStationsForUser(userId).then((allStations) {
       stations.addAll(allStations.documents);
     });
   }

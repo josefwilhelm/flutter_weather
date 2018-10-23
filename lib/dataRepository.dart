@@ -4,15 +4,11 @@ import 'dart:async';
 import 'components/StandardButtonWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
-<<<<<<< HEAD
 import 'bloc/BlocProvider.dart';
 import 'bloc/StationBloc.dart';
-=======
 import 'models/WeatherDataModels.dart';
 import 'screens/home.dart';
-
 import 'package:charts_flutter/flutter.dart' as charts;
->>>>>>> 88c2deb58ee45fdd6d1b61b20e924fe8a9eb748a
 
 class DataRepository extends StatefulWidget {
   _DataRepositoryState createState() => _DataRepositoryState();
