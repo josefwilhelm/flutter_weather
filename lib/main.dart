@@ -25,8 +25,9 @@ class MyAppState extends State<MyApp> {
           "/login": (context) => Login(),
         },
         theme: new ThemeData(
-          brightness: Brightness.light,
-          primarySwatch: Colors.teal,
+          brightness: Brightness.dark,
+          primarySwatch: Colors.grey,
+          accentColor: Colors.cyan,
           primaryTextTheme:
               Theme.of(context).primaryTextTheme.apply(bodyColor: Colors.white),
         ),
