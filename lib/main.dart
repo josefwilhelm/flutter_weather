@@ -5,9 +5,13 @@ import 'package:bloc/bloc.dart';
 import 'bloc/AuthenticationBloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'screens/splash.dart';
+import 'bloc/StationBloc.dart';
+import 'bloc/BlocProvider.dart';
 
-void main() =>
-    runApp(BlocProvider(bloc: AuthenticationBloc(), child: new MyApp()));
+void main() => runApp(BlocProvider(
+    bloc: AuthenticationBloc(),
+    child: BlocProviderGeneric<StationBloc>(
+        bloc: StationBloc(), child: new MyApp())));
 
 class MyApp extends StatefulWidget {
   @override

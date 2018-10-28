@@ -1,15 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
 
 class FirebaseAuthenticationService {
   FirebaseAuth auth = FirebaseAuth.instance;
-  FirebaseUser currentUser;
 
   //TODO singleton
-  FirebaseAuthenticationService() {
-    _getUser();
-  }
+  FirebaseAuthenticationService() {}
 
-  void _getUser() {
-    auth.currentUser().then((user) => this.currentUser = user);
+  Future<FirebaseUser> getUser() async {
+    return auth.currentUser().catchError((error) => print(error.toString()));
   }
 }

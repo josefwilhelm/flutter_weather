@@ -23,32 +23,29 @@ class _BottomNavigaitonWidgetState extends State<BottomNavigationWidget> {
   Widget build(BuildContext context) {
     final color = Theme.of(context).primaryColor;
 
-    return BlocProvider<StationBloc>(
-      bloc: StationBloc(),
-      child: Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.shifting,
-          currentIndex: _currentIndex,
-          onTap: _onTabTapped, // this will be set when a new tab is tapped
-          items: [
-            BottomNavigationBarItem(
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.shifting,
+        currentIndex: _currentIndex,
+        onTap: _onTabTapped, // this will be set when a new tab is tapped
+        items: [
+          BottomNavigationBarItem(
+            backgroundColor: color,
+            icon: Icon(FontAwesomeIcons.home),
+            title: new Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: color,
+            icon: Icon(FontAwesomeIcons.wrench),
+            title: new Text('Settings'),
+          ),
+          BottomNavigationBarItem(
               backgroundColor: color,
-              icon: Icon(FontAwesomeIcons.home),
-              title: new Text('Home'),
-            ),
-            BottomNavigationBarItem(
-              backgroundColor: color,
-              icon: Icon(FontAwesomeIcons.wrench),
-              title: new Text('Settings'),
-            ),
-            BottomNavigationBarItem(
-                backgroundColor: color,
-                icon: Icon(FontAwesomeIcons.database),
-                title: Text('Database'))
-          ],
-        ),
-        body: _widgets[_currentIndex],
+              icon: Icon(FontAwesomeIcons.database),
+              title: Text('Database'))
+        ],
       ),
+      body: _widgets[_currentIndex],
     );
   }
 
