@@ -8,7 +8,8 @@ class StationBloc implements BlocBase {
   final _repository = StationRepository();
 
   final _stationFetcher = BehaviorSubject<List<Station>>();
-  final _stationName = BehaviorSubject<Station>();
+  final _stationName =
+      BehaviorSubject<Station>(seedValue: Station("Station1", ''));
   final _stationValuesController = BehaviorSubject<StationValue>(
       seedValue: StationValue(
           airPressure: 1235,

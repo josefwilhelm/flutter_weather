@@ -63,9 +63,11 @@ class _DashboardState extends State<Dashboard> {
       builder: (BuildContext context, AsyncSnapshot<Station> snapshot) {
         if (snapshot.hasData) {
           return Expanded(
-              child: Card(
-                  color: Colors.grey,
-                  child: Text("Station: " + snapshot.data.name)));
+              child: Container(
+                  color: Colors.grey[800],
+                  child: Text("Station: " + snapshot.data.name,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.display1)));
         }
         return Container();
       },
