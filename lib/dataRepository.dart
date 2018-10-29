@@ -36,11 +36,11 @@ class _DataRepositoryState extends State<DataRepository> {
 
   @override
   Widget build(BuildContext context) {
-    final StationBloc bloc = BlocProvider.of(context);
+    final StationBloc bloc = BlocProviderGeneric.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(bloc.title),
+        title: Text("asdf"),
       ),
       body: //SingleChildScrollView(
           SingleChildScrollView(
@@ -76,36 +76,6 @@ class _DataRepositoryState extends State<DataRepository> {
                 style: Theme.of(context).textTheme.display2,
               ),
             ),
-            //       StandardButton(
-            //           title: "Add 1 measurement to firestore",
-            //           onPress: _addData,
-            //           buttonColor: Theme.of(context).primaryColor),
-            //       SizedBox(
-            //         height: 32.0,
-            //       ),
-            //       StandardButton(
-            //           title: "add data periodically",
-            //           onPress: _addDataPeriodically,
-            //           buttonColor: Colors.green),
-            //       SizedBox(
-            //         height: 32.0,
-            //       ),
-            //       StandardButton(
-            //           title: "add new station",
-            //           onPress: _addNewStation,
-            //           buttonColor: Colors.blue),
-            //       SizedBox(
-            //         height: 32.0,
-            //       ),
-            //       StandardButton(
-            //           title: "data", onPress: _parseData, buttonColor: Colors.red),
-            //       SizedBox(
-            //         height: 32.0,
-            //       ),
-            //       StandardButton(
-            //           title: "refresh", onPress: _refresh, buttonColor: Colors.red),
-            //       Text("charts"),
-
             Container(
               height: 400.0,
               child: stationValues.isEmpty
@@ -233,6 +203,8 @@ class _DataRepositoryState extends State<DataRepository> {
             'precipition': random.nextDouble(),
             'tempGround': 5 + random.nextInt(20) + random.nextDouble(),
             'isWet': random.nextInt(20) == 19 ? false : true,
+            'humidiy': 40 + random.nextInt(80) + random.nextDouble(),
+            'airPressure': 900 + random.nextInt(400),
             'timestamp': timestamp
           })
           .then((document) =>

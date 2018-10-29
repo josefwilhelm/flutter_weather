@@ -1,39 +1,53 @@
 import 'BlocProvider.dart';
 import 'dart:async';
+import 'package:rxdart/rxdart.dart';
+import '../models/Station.dart';
+import '../repository/StationRepository.dart';
 
 class StationBloc implements BlocBase {
-  int _counter;
+  final _repository = StationRepository();
 
-  String title = "hallo seppi";
+  final _stationFetcher = BehaviorSubject<List<Station>>();
+  final _stationName = BehaviorSubject<Station>();
+  final _stationValuesController = BehaviorSubject<StationValue>(
+      seedValue: StationValue(
+          airPressure: 1235,
+          humidity: 78.432,
+          precipition: 0.4,
+          temperatureAir: 13.5,
+          temperatureGround: 14.5,
+          timestamp: DateTime.now()));
 
-  //
-  // Stream to handle the counter
-  //
-  StreamController<int> _counterController = StreamController<int>();
-  StreamSink<int> get _inAdd => _counterController.sink;
-  Stream<int> get outCounter => _counterController.stream;
+  Sink get changeStation => _stationName.sink;
+  Observable<Station> get stationName => _stationName.stream;
+  Observable<List<Station>> get allStations => _stationFetcher.stream;
+  Observable<StationValue> get stationValue => _stationValuesController.stream;
+  Sink get stationValuesSink => _stationValuesController.sink;
 
-  //
-  // Stream to handle the action on the counter
-  //
-  StreamController _actionController = StreamController();
-  StreamSink get incrementCounter => _actionController.sink;
-
-  //
-  // Constructor
-  //
   StationBloc() {
-    _counter = 0;
-    _actionController.stream.listen(_handleLogic);
+    _stationName.stream.listen(_handleStationChange);
+    // changeStation.add(_repository.randomStationValue());
+  }
+
+  void addValues() {}
+
+  void _handleStationChange(Station station) async {
+    var stationValue =
+        await _repository.getValuesForStation(station.documentId);
+
+    _stationValuesController.sink
+        .add(StationValue.fromFireStoreData(stationValue.documents.first));
+  }
+
+  fetchAllStations() async {
+    _repository
+        .getAllStations()
+        .then((stations) => _stationFetcher.sink.add(stations));
   }
 
   void dispose() {
-    _actionController.close();
-    _counterController.close();
-  }
-
-  void _handleLogic(data) {
-    _counter = _counter + 1;
-    _inAdd.add(_counter);
+    _stationFetcher.close();
+    _stationName.close();
+    _stationValuesController.close();
   }
 }

@@ -17,7 +17,6 @@ class StandardButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: double.infinity,
         child: Theme.of(context).platform == TargetPlatform.iOS
             ? CupertinoButton(
                 padding: padding,
