@@ -6,7 +6,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:sticky_headers/sticky_headers.dart';
 import '../components/StandardButtonWidget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../components/LoadingFullscreen.dart';
+import 'package:kitty_mingsi_flutter/components/LoadingFullscreen.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();

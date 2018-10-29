@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
-import 'components/StandardButtonWidget.dart';
+import 'package:kitty_mingsi_flutter/components/StandardButtonWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
-import 'bloc/BlocProvider.dart';
-import 'bloc/StationBloc.dart';
-import 'models/WeatherDataModels.dart';
-import 'screens/home.dart';
+import 'package:kitty_mingsi_flutter/models/WeatherDataModels.dart';
+import 'package:kitty_mingsi_flutter/screens/home.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class DataRepository extends StatefulWidget {
@@ -36,7 +34,7 @@ class _DataRepositoryState extends State<DataRepository> {
 
   @override
   Widget build(BuildContext context) {
-    final StationBloc bloc = BlocProviderGeneric.of(context);
+
 
     return Scaffold(
       appBar: AppBar(

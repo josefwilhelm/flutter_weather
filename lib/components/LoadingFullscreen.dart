@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../components/DefaultLoadingIndicator.dart';
+import 'package:kitty_mingsi_flutter/components/DefaultLoadingIndicator.dart';
 
 class LoadingFullScreenWidget extends StatelessWidget {
   @override

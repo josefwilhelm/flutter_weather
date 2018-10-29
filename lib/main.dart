@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
-import 'screens/login.dart';
-import 'screens/bottomNavigation.dart';
+import 'package:kitty_mingsi_flutter/screens/login.dart';
+import 'package:kitty_mingsi_flutter/screens/bottomNavigation.dart';
 import 'package:bloc/bloc.dart';
-import 'bloc/AuthenticationBloc.dart';
+import 'package:kitty_mingsi_flutter/bloc/AuthenticationBloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'screens/splash.dart';
-import 'bloc/StationBloc.dart';
-import 'bloc/BlocProvider.dart';
+import 'package:kitty_mingsi_flutter/screens/splash.dart';
+import 'package:kitty_mingsi_flutter/bloc/StationBloc.dart';
+import 'package:kitty_mingsi_flutter/bloc/BlocProvider.dart';
 
-void main() => runApp(BlocProvider(
-    bloc: AuthenticationBloc(),
-    child: BlocProviderGeneric<StationBloc>(
-        bloc: StationBloc(), child: new MyApp())));
+import 'package:kitty_mingsi_flutter/service/firestoreService.dart';
+import 'package:kitty_mingsi_flutter/service/authenticationService.dart';
+import 'package:kitty_mingsi_flutter/service_locator/serviceLocator.dart';
+import 'package:kitty_mingsi_flutter/repository/StationRepository.dart';
+
+void main() {
+  sl.registerSingleton<FirebaseAuthenticationService>(new FirebaseAuthenticationService());
+  sl.registerSingleton<FirestoreService>(new FirestoreService());
+  sl.registerSingleton<StationRepository>(new StationRepository());
+
+  runApp(BlocProvider(
+      bloc: AuthenticationBloc(),
+      child: BlocProviderGeneric<StationBloc>(
+          bloc: StationBloc(), child: new MyApp())));
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -31,7 +42,7 @@ class MyAppState extends State<MyApp> {
         theme: new ThemeData(
           brightness: Brightness.dark,
           primarySwatch: Colors.grey,
-          accentColor: Colors.cyan,
+          accentColor: Colors.teal[800],
           primaryTextTheme:
               Theme.of(context).primaryTextTheme.apply(bodyColor: Colors.white),
         ),

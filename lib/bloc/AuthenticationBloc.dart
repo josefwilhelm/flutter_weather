@@ -1,17 +1,16 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'states/AuthenticationState.dart';
-import 'events/AuthenticationEvent.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../screens/bottomNavigation.dart';
+import 'package:kitty_mingsi_flutter/bloc/events/AuthenticationEvent.dart';
+import 'package:kitty_mingsi_flutter/bloc/states/AuthenticationState.dart';
+import 'package:kitty_mingsi_flutter/service/authenticationService.dart';
+import 'package:kitty_mingsi_flutter/service_locator/serviceLocator.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  FirebaseUser _user;
+  final FirebaseAuthenticationService _auth =
+      sl.get<FirebaseAuthenticationService>();
 
   BuildContext _context;
 
@@ -39,10 +38,9 @@ class AuthenticationBloc
     if (event is LoginButtonPressed) {
       yield AuthenticationState.loading();
       try {
-        _user = await _login(event.email, event.password);
-        debugPrint(_user.email);
+        await _auth.login(event.email, event.password);
         Navigator.pushReplacementNamed(_context, "/start");
-        yield AuthenticationState.success(_user.uid);
+        yield AuthenticationState.success();
       } catch (error) {
         yield AuthenticationState.failure(error.toString());
       }
@@ -51,17 +49,9 @@ class AuthenticationBloc
     if (event is LogoutPressed) {
       yield AuthenticationState.loading();
       try {
-        await _logout();
+        await _auth.logout();
         Navigator.pushReplacementNamed(_context, "/login");
       } catch (error) {}
     }
-  }
-
-  Future<FirebaseUser> _login(String email, String password) async {
-    return _auth.signInWithEmailAndPassword(email: email, password: password);
-  }
-
-  Future<void> _logout() {
-    _auth.signOut();
   }
 }
