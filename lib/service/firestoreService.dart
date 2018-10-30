@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../models/Station.dart';
+import 'package:kitty_mingsi_flutter/service/authenticationService.dart';
+import 'package:kitty_mingsi_flutter/service_locator/serviceLocator.dart';
+import 'package:kitty_mingsi_flutter/models/Station.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'dart:math';
@@ -11,17 +13,14 @@ class FirestoreService {
   Firestore firestore = Firestore();
   CollectionReference usersReference;
   CollectionReference stationsReference;
-  FirebaseUser currentUser;
+  FirebaseAuthenticationService _auth = sl.get<FirebaseAuthenticationService>();
 
   Set<DocumentSnapshot> stations;
 
-  FirestoreService(FirebaseUser user) {
-    this.currentUser = user;
+  FirestoreService() {
     this.usersReference = firestore.collection("users");
     this.stationsReference = firestore.collection("stations");
-
-    _loadData();
-  }
+    }
 
   Future<Set<Station>> getAllStationNames() async {
     if (stations == null) {
@@ -31,18 +30,18 @@ class FirestoreService {
 
   Future<void> _loadData() {
     //TODO
-    return _getAllStationsForUser(currentUser.uid).then((allStations) {
+    return _getAllStationsForUser(_auth.currentUser.uid).then((allStations) {
       stations.addAll(allStations.documents);
     });
   }
 
   Future<QuerySnapshot> loadAllStations() {
-    return _getAllStationsForUser(currentUser.uid);
+    return _getAllStationsForUser(_auth.currentUser.uid);
   }
 
   Future<QuerySnapshot> _getAllStationsForUser(String userId) {
     return stationsReference
-        .where("userId", isEqualTo: currentUser.uid)
+        .where("userId", isEqualTo: _auth.currentUser.uid)
         .getDocuments()
         .catchError((error) => print(error.toString()));
   }
@@ -63,7 +62,7 @@ class FirestoreService {
     var s = stationsReference
         .document(stationId)
         .collection('data')
-        .orderBy("timestamp")
+        .orderBy("timestamp", descending: true)
         .limit(1);
 
     return s.getDocuments();

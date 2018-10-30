@@ -1,15 +1,16 @@
-import 'BlocProvider.dart';
-import 'dart:async';
+import 'package:kitty_mingsi_flutter/bloc/BlocProvider.dart';
 import 'package:rxdart/rxdart.dart';
-import '../models/Station.dart';
-import '../repository/StationRepository.dart';
+import 'package:kitty_mingsi_flutter/models/Station.dart';
+import 'package:kitty_mingsi_flutter/service_locator/serviceLocator.dart';
+import 'package:kitty_mingsi_flutter/repository/StationRepository.dart';
 
 class StationBloc implements BlocBase {
-  final _repository = StationRepository();
+  final _repository = sl.get<StationRepository>();
 
   final _stationFetcher = BehaviorSubject<List<Station>>();
   final _stationName =
       BehaviorSubject<Station>(seedValue: Station("Station1", ''));
+
   final _stationValuesController = BehaviorSubject<StationValue>(
       seedValue: StationValue(
           airPressure: 1235,

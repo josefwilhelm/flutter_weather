@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../bloc/BlocProvider.dart';
-import '../bloc/StationBloc.dart';
+import 'package:kitty_mingsi_flutter/bloc/BlocProvider.dart';
+import 'package:kitty_mingsi_flutter/bloc/StationBloc.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import '../components/StandardButtonWidget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/Station.dart';
-import '../components/LoadingFullscreen.dart';
-import '../util/DoubleToStringWithDigitsConverter.dart';
+import 'package:kitty_mingsi_flutter/components/StandardButtonWidget.dart';
+import 'package:kitty_mingsi_flutter/models/Station.dart';
+import 'package:kitty_mingsi_flutter/components/LoadingFullscreen.dart';
+import 'package:kitty_mingsi_flutter/util/DoubleToStringWithDigitsConverter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
@@ -28,6 +28,15 @@ class _DashboardState extends State<Dashboard> {
         child: Scaffold(
             appBar: AppBar(
               title: Text("Dashboard"),
+              actions: <Widget>[
+                GestureDetector(
+                  onTap: () => _bottomSheet(context, bloc),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: Icon(FontAwesomeIcons.filter),
+                  ),
+                )
+              ],
             ),
             body: StreamBuilder(
                 stream: bloc.stationValue,
@@ -37,19 +46,42 @@ class _DashboardState extends State<Dashboard> {
                   } else if (snapshot.hasData) {
                     var snap = snapshot.data;
                     return Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         _header(bloc),
-                        _column(snap.temperatureAir, airTempTitle,
-                            snap.temperatureGround, groundTempTitle),
-                        _column(snap.airPressure.toDouble(), airPressureTitle,
-                            snap.humidity, humidityTitle),
-                        _column(snap.precipition, precipitationLastHourTitle,
-                            snap.precipition * 2.5, precipitationLast24hTitle),
-                        Expanded(
-                          child: Container(),
+                        Flexible(
+                          flex: 10,
+                          child: SingleChildScrollView(
+                              child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                  "Last update: " +
+                                      snap.timestamp.toIso8601String(),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              _column(snap.temperatureAir, airTempTitle,
+                                  snap.temperatureGround, groundTempTitle),
+                              _column(
+                                  snap.airPressure.toDouble(),
+                                  airPressureTitle,
+                                  snap.humidity,
+                                  humidityTitle),
+                              _column(
+                                  snap.precipition,
+                                  precipitationLastHourTitle,
+                                  snap.precipition * 2.5,
+                                  precipitationLast24hTitle),
+                              Flexible(
+                                child: Container(),
+                              ),
+                              _button(context, bloc)
+                            ],
+                          )),
                         ),
-                        _button(context, bloc)
                       ],
                     );
                   }
@@ -62,12 +94,19 @@ class _DashboardState extends State<Dashboard> {
       stream: bloc.stationName,
       builder: (BuildContext context, AsyncSnapshot<Station> snapshot) {
         if (snapshot.hasData) {
-          return Expanded(
-              child: Container(
-                  color: Colors.grey[800],
-                  child: Text("Station: " + snapshot.data.name,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.display1)));
+          return Container(
+              width: double.infinity,
+              color: Colors.teal[800],
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    snapshot.data.name.toUpperCase(),
+                    style: Theme.of(context).textTheme.display1,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ));
         }
         return Container();
       },
@@ -170,14 +209,14 @@ class DefaultWeatherWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Flexible(
       child: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             title == null
                 ? Container()
-                : Expanded(
+                : Flexible(
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -189,10 +228,8 @@ class DefaultWeatherWidget extends StatelessWidget {
                         maxLines: 1,
                       ),
                     ),
-                    flex: 1,
                   ),
-            Expanded(
-              flex: 3,
+            Flexible(
               child: Center(
                 child: Container(
                   child: AutoSizeText(

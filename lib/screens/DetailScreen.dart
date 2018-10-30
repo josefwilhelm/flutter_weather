@@ -1,4 +1,4 @@
-import 'Dashboard.dart';
+import 'package:kitty_mingsi_flutter/screens/Dashboard.dart';
 import 'package:flutter/material.dart';
 
 class DetailScreen extends StatelessWidget {

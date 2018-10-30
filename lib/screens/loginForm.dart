@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../components/StandardButtonWidget.dart';
-import '../bloc/AuthenticationBloc.dart';
+import 'package:kitty_mingsi_flutter/components/StandardButtonWidget.dart';
+import 'package:kitty_mingsi_flutter/bloc/AuthenticationBloc.dart';
 import 'package:bloc/bloc.dart';
-import '../bloc/events/AuthenticationEvent.dart';
-import '../bloc/states/AuthenticationState.dart';
-import '../components/DefaultLoadingIndicator.dart';
+import 'package:kitty_mingsi_flutter/bloc/events/AuthenticationEvent.dart';
+import 'package:kitty_mingsi_flutter/bloc/states/AuthenticationState.dart';
+import 'package:kitty_mingsi_flutter/components/DefaultLoadingIndicator.dart';
 
 class LoginForm extends StatefulWidget {
   AuthenticationBloc authBloc;
@@ -32,7 +32,7 @@ class _LoginFormState extends State<LoginForm> {
     //DEBUG
     emailController.text = "test@test.com";
     passwordController.text = "123456";
-    color = Theme.of(context).primaryColor;
+    color = Theme.of(context).accentColor;
 
     return BlocBuilder<AuthenticationEvent, AuthenticationState>(
         bloc: authBloc,

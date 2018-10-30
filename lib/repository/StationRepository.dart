@@ -1,13 +1,13 @@
-import '../service/firestoreService.dart';
-import '../service/authenticationService.dart';
+import 'package:kitty_mingsi_flutter/service/firestoreService.dart';
+import 'package:kitty_mingsi_flutter/service/authenticationService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/Station.dart';
+import 'package:kitty_mingsi_flutter/models/Station.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:kitty_mingsi_flutter/service_locator/serviceLocator.dart';
 
 class StationRepository {
-  FirebaseAuthenticationService auth = FirebaseAuthenticationService();
-  FirestoreService firestoreService;
+  FirestoreService firestoreService = sl.get<FirestoreService>();
 
   ValueObservable<List<DocumentSnapshot>> _stations;
 
@@ -35,12 +35,9 @@ class StationRepository {
   }
 
   void _init() async {
-    FirebaseUser user = await auth.getUser();
-    firestoreService = FirestoreService(user);
   }
 
   Future<List<Station>> getAllStations() async {
-    // return firestoreService.loadAllStations();
     var stations = await firestoreService.loadAllStations();
 
     try {

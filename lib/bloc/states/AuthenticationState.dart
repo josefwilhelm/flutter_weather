@@ -40,12 +40,12 @@ class AuthenticationState {
     );
   }
 
-  factory AuthenticationState.success(String token) {
+  factory AuthenticationState.success() {
     return AuthenticationState(
       isLoading: false,
       isLoginButtonEnabled: true,
       error: '',
-      token: token,
+      token: '',
     );
   }
 }

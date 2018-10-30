@@ -6,7 +6,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:sticky_headers/sticky_headers.dart';
 import '../components/StandardButtonWidget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../components/LoadingFullscreen.dart';
+import 'package:kitty_mingsi_flutter/components/LoadingFullscreen.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
@@ -27,10 +27,9 @@ class _HomeState extends State<Home> {
           bottom: TabBar(
             tabs: [
               Tab(
-                icon: Icon(FontAwesomeIcons.wineGlass),
                 text: "Rain",
               ),
-              Tab(icon: Icon(FontAwesomeIcons.ravelry), text: "Temperature"),
+              Tab(text: "Temperature"),
             ],
           ),
         ),
@@ -166,9 +165,9 @@ class HeaderCart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
       width: double.infinity,
       child: Card(
+        color: Colors.white,
         child: Text(
           text,
           style: Theme.of(context).textTheme.display1,

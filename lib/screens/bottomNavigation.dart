@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'home.dart';
-import 'settings.dart';
-import '../dataRepository.dart';
-import '../bloc/BlocProvider.dart';
-import '../bloc/StationBloc.dart';
+import 'package:kitty_mingsi_flutter/screens/settings.dart';
+import 'package:kitty_mingsi_flutter/dataRepository.dart';
 import 'Dashboard.dart';
 
 class BottomNavigationWidget extends StatefulWidget {

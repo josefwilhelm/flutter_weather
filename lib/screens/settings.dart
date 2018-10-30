@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../bloc/AuthenticationBloc.dart';
+import 'package:kitty_mingsi_flutter/bloc/AuthenticationBloc.dart';
 import 'package:bloc/bloc.dart';
-import '../bloc/events/AuthenticationEvent.dart';
-import '../bloc/states/AuthenticationState.dart';
+import 'package:kitty_mingsi_flutter/bloc/events/AuthenticationEvent.dart';
+import 'package:kitty_mingsi_flutter/bloc/states/AuthenticationState.dart';
 
 class SettingsWidget extends StatelessWidget {
   @override

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter/cupertino.dart'; //new
-import 'loginForm.dart';
-import 'registerForm.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:kitty_mingsi_flutter/screens/loginForm.dart';
+import 'package:kitty_mingsi_flutter/screens/registerForm.dart';
 import 'package:bloc/bloc.dart';
-import '../bloc/AuthenticationBloc.dart';
+import 'package:kitty_mingsi_flutter/bloc/AuthenticationBloc.dart';
 
-import '../bloc/events/AuthenticationEvent.dart';
-import '../bloc/states/AuthenticationState.dart';
+import 'package:kitty_mingsi_flutter/bloc/events/AuthenticationEvent.dart';
+import 'package:kitty_mingsi_flutter/bloc/states/AuthenticationState.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -19,7 +19,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthenticationBloc _authBloc = BlocProvider.of(context);
+    final AuthenticationBloc _authBloc = BlocProvider.of(context) as AuthenticationBloc;
 
     final List<Widget> _widgets = [LoginForm(_authBloc), RegisterForm()];
 
@@ -56,9 +56,7 @@ class _LoginState extends State<Login> {
                 Icon(
                   FontAwesomeIcons.airFreshener,
                   size: 80.0,
-                  color: _currentIndex == 0
-                      ? Theme.of(context).primaryColor
-                      : Theme.of(context).accentColor,
+                  color:  Theme.of(context).accentColor,
                 ),
                 SizedBox(height: 24.0),
                 Expanded(flex: 3, child: _widgets[_currentIndex]),
