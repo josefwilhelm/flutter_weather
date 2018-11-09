@@ -11,7 +11,6 @@ class FirebaseAuthenticationService {
   init() async {
     _auth.currentUser().then((user) {
       currentUser = user;
-      print(currentUser.email);
     }).catchError((error) => print(error.toString()));
   }
 

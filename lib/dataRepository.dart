@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
-import 'package:kitty_mingsi_flutter/components/StandardButtonWidget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
+
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:kitty_mingsi_flutter/components/StandardButtonWidget.dart';
 import 'package:kitty_mingsi_flutter/models/WeatherDataModels.dart';
 import 'package:kitty_mingsi_flutter/screens/home.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 class DataRepository extends StatefulWidget {
   _DataRepositoryState createState() => _DataRepositoryState();
@@ -21,6 +22,7 @@ class _DataRepositoryState extends State<DataRepository> {
   Map<DateTime, double> airTemperatureMap;
   Random random = Random();
   FirebaseUser user;
+
   CollectionReference get stations => firestore.collection('stations');
 
   final Firestore firestore = Firestore();
@@ -34,14 +36,12 @@ class _DataRepositoryState extends State<DataRepository> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
         title: Text("asdf"),
       ),
       body: //SingleChildScrollView(
-          SingleChildScrollView(
+      SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,7 +55,9 @@ class _DataRepositoryState extends State<DataRepository> {
             StandardButton(
                 title: "Add 1 measurement to firestore",
                 onPress: _addData,
-                buttonColor: Theme.of(context).primaryColor),
+                buttonColor: Theme
+                    .of(context)
+                    .primaryColor),
             StandardButton(
                 title: "add data periodically",
                 onPress: _addDataPeriodically,
@@ -71,21 +73,27 @@ class _DataRepositoryState extends State<DataRepository> {
               color: Colors.yellow,
               child: Text(
                 "Number of stations: " + stationValues.length.toString(),
-                style: Theme.of(context).textTheme.display2,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .display2,
               ),
             ),
             Container(
               height: 400.0,
               child: stationValues.isEmpty
                   ? Text(
-                      "reload UI please!",
-                      style: Theme.of(context).textTheme.display2,
-                    )
+                "reload UI please!",
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .display2,
+              )
                   : ListView.builder(
-                      itemCount: stationValues.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _stationsCharts()[index];
-                      }),
+                  itemCount: stationValues.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _stationsCharts()[index];
+                  }),
             ),
           ],
         ),
@@ -160,7 +168,6 @@ class _DataRepositoryState extends State<DataRepository> {
           documents = value.documents;
           _parseData();
           debugPrint("number of stations: " + documents.length.toString());
-          debugPrint("user: " + user.email);
         });
       } catch (e) {
         debugPrint(e.toString());
@@ -197,16 +204,16 @@ class _DataRepositoryState extends State<DataRepository> {
           .document(document.documentID)
           .collection('data')
           .add({
-            'tempAir': random.nextInt(30) + random.nextDouble(),
-            'precipition': random.nextDouble(),
-            'tempGround': 5 + random.nextInt(20) + random.nextDouble(),
-            'isWet': random.nextInt(20) == 19 ? false : true,
-            'humidiy': 40 + random.nextInt(80) + random.nextDouble(),
-            'airPressure': 900 + random.nextInt(400),
-            'timestamp': timestamp
-          })
+        'tempAir': random.nextInt(30) + random.nextDouble(),
+        'precipition': random.nextDouble(),
+        'tempGround': 5 + random.nextInt(20) + random.nextDouble(),
+        'isWet': random.nextInt(20) == 19 ? false : true,
+        'humidiy': 40 + random.nextInt(80) + random.nextDouble(),
+        'airPressure': 900 + random.nextInt(400),
+        'timestamp': timestamp
+      })
           .then((document) =>
-              debugPrint("written to document: " + document.documentID))
+          debugPrint("written to document: " + document.documentID))
           .catchError((error) => debugPrint(error.toString()));
     });
   }

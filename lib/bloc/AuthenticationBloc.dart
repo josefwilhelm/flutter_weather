@@ -10,7 +10,7 @@ import 'package:kitty_mingsi_flutter/service_locator/serviceLocator.dart';
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final FirebaseAuthenticationService _auth =
-      sl.get<FirebaseAuthenticationService>();
+  sl.get<FirebaseAuthenticationService>();
 
   BuildContext _context;
 
@@ -33,8 +33,8 @@ class AuthenticationBloc
   }
 
   @override
-  Stream<AuthenticationState> mapEventToState(
-      AuthenticationState state, AuthenticationEvent event) async* {
+  Stream<AuthenticationState> mapEventToState(AuthenticationState state,
+      AuthenticationEvent event) async* {
     if (event is LoginButtonPressed) {
       yield AuthenticationState.loading();
       try {
@@ -51,6 +51,7 @@ class AuthenticationBloc
       try {
         await _auth.logout();
         Navigator.pushReplacementNamed(_context, "/login");
+        yield AuthenticationState.initial();
       } catch (error) {}
     }
   }
