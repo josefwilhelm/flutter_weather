@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kitty_mingsi_flutter/screens/settings.dart';
 import 'package:kitty_mingsi_flutter/dataRepository.dart';
+import 'package:kitty_mingsi_flutter/screens/settings.dart';
+
 import 'Dashboard.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
@@ -9,11 +10,12 @@ class BottomNavigationWidget extends StatefulWidget {
 }
 
 class _BottomNavigaitonWidgetState extends State<BottomNavigationWidget> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   final List<Widget> _widgets = [
     Dashboard(),
-    SettingsWidget(),
-    DataRepository()
+    ProfileWidget(),
+    DataRepository(),
+    Test()
   ];
 
   @override
@@ -33,13 +35,17 @@ class _BottomNavigaitonWidgetState extends State<BottomNavigationWidget> {
           ),
           BottomNavigationBarItem(
             backgroundColor: color,
-            icon: Icon(FontAwesomeIcons.wrench),
-            title: new Text('Settings'),
+            icon: Icon(FontAwesomeIcons.user),
+            title: new Text('Profile'),
           ),
           BottomNavigationBarItem(
               backgroundColor: color,
               icon: Icon(FontAwesomeIcons.database),
-              title: Text('Database'))
+              title: Text('Database')),
+          BottomNavigationBarItem(
+              backgroundColor: color,
+              icon: Icon(FontAwesomeIcons.teeth),
+              title: Text('Test'))
         ],
       ),
       body: _widgets[_currentIndex],
@@ -50,5 +56,26 @@ class _BottomNavigaitonWidgetState extends State<BottomNavigationWidget> {
     setState(() {
       _currentIndex = index;
     });
+  }
+}
+
+class Test extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(child: Text("Test")),
+          Container(
+              child: Image.asset(
+            'assets/test.png',
+            fit: BoxFit.fill,
+            height: 200.0,
+          )),
+          Center(child: Text("Test")),
+        ],
+      ),
+    );
   }
 }
